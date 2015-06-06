@@ -142,7 +142,9 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 	
 	private void changePlayer(){
 		
-		if(computer == false){
+		if(computer){
+			ComputerPlayer.nextMove();
+		}else{
 			if(player == 0){
 				player = 1;
 			}else{
@@ -166,9 +168,9 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 	public void mousePressed(MouseEvent e) {
 		pressed = true;
 		if(addTile()){
+			repaint();
 			changePlayer();
 		}
-		repaint();
 	}
 
 	public void mouseReleased(MouseEvent e) {

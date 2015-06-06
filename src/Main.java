@@ -17,7 +17,7 @@ public class Main extends JFrame{
 	}
 	
 	public void newGame(){
-		Window window = new Window(this, false);
+		Window window = new Window(this, true);
 		window.setLocation(100, 100);
 		add(window);
 	}
