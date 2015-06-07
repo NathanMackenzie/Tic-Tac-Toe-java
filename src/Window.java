@@ -154,6 +154,97 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 		
 	}
 	
+	private void threeInARow(){
+		checkVertical();
+		
+		checkHorizontal();
+		
+		checkDiagonal();
+	}
+	
+	private boolean checkVertical(){
+		String suit = "Empty"; //Set to value empty to avoid null pointer exception within .equals() epression
+		for(int c = 0; c < 3; c++){
+			for(int r = 0; r < 3; r++){
+				
+				if(r == 0 && XO[c][r] != null){
+					suit = XO[c][r];
+				}
+				
+				if(suit.equals(XO[c][r])){
+					if(r == 2){
+						main.endGame();
+						return true;
+					}
+				}else{
+					break;
+				}
+				
+			}
+		}
+		return false;
+	}
+	
+	private boolean checkHorizontal(){
+		String suit = "Empty"; //Set to value empty to avoid null pointer exception within .equals() epression
+		for(int r = 0; r < 3; r++){
+			for(int c = 0; c < 3; c++){
+				
+				if(c == 0 && XO[c][r] != null){
+					suit = XO[c][r];
+				}
+				
+				if(suit.equals(XO[c][r])){
+					if(c == 2){
+						main.endGame();
+						return true;
+					}
+				}else{
+					break;
+				}
+				
+			}
+		}
+		return false;
+	}
+	
+	private boolean checkDiagonal(){
+		String suit = "Empty";
+		
+		for(int i = 0; i < 3; i++){
+			if(i == 0 && XO[i][i] != null){
+				suit = XO[i][i];
+			}
+			
+			if(suit.equals(XO[i][i])){
+				if(i == 2){
+					main.endGame();
+					return true;
+				}
+			}else{
+				break;
+			}
+		}
+		
+		suit = "Empty";
+		
+		for(int i = 2; i >= 0; i--){
+			if(i == 2 && XO[i][i] != null){
+				suit = XO[i][i];
+			}
+			
+			if(suit.equals(XO[i][i])){
+				if(i == 0){
+					main.endGame();
+					return true;
+				}
+			}else{
+				break;
+			}
+		}
+		
+		return false;
+	}
 	
 	public void mouseMoved(MouseEvent e) {
 	      x = e.getX();
@@ -171,6 +262,7 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 			repaint();
 			changePlayer();
 		}
+		threeInARow();
 	}
 
 	public void mouseReleased(MouseEvent e) {
