@@ -13,8 +13,11 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 	private static int y;
 	private boolean pressed = false;
 	private static int player = 1;
+	private boolean gameOver = false;
+	private String crossOut;
 	public static String[][] XO = new String[3][3];
 	public boolean computer;
+	
 	Main main;
 	
 	public Window(Main main, boolean vsComput){
@@ -33,8 +36,33 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 	@Override public void paintComponent(Graphics g){
 		super.paintComponent(g);
 		paintGameBoard(g);
-		paintSelected(g);
-		paintTiles(g);
+		
+		if(gameOver){
+			paintTiles(g);
+			crossOut(g);
+		}else{
+			paintSelected(g);
+			paintTiles(g);
+		}
+		
+		
+	}
+	
+	private void crossOut(Graphics g){
+		g.setColor(Color.RED);
+		
+		if(crossOut.startsWith("v")){
+			System.out.println(Integer.valueOf(crossOut.charAt(1)));
+			System.out.println(crossOut);
+			g.fillRect(Integer.valueOf(crossOut.charAt(1)), 10, 20, 100);
+			
+		}else if(crossOut.startsWith("h")){
+			
+		}else if(crossOut.equals("dr")){
+			
+		}else if(crossOut.equals("dl")){
+			
+		}
 	}
 	
 	private void paintGameBoard(Graphics g){
@@ -162,7 +190,7 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 		checkDiagonal();
 	}
 	
-	private boolean checkVertical(){
+	private void checkVertical(){
 		String suit = "Empty"; //Set to value empty to avoid null pointer exception within .equals() epression
 		for(int c = 0; c < 3; c++){
 			for(int r = 0; r < 3; r++){
@@ -173,8 +201,9 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 				
 				if(suit.equals(XO[c][r])){
 					if(r == 2){
-						main.endGame();
-						return true;
+						gameOver = true;
+						crossOut = "v" + c;
+						return;
 					}
 				}else{
 					break;
@@ -182,10 +211,10 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 				
 			}
 		}
-		return false;
+		return;
 	}
 	
-	private boolean checkHorizontal(){
+	private void checkHorizontal(){
 		String suit = "Empty"; //Set to value empty to avoid null pointer exception within .equals() epression
 		for(int r = 0; r < 3; r++){
 			for(int c = 0; c < 3; c++){
@@ -196,8 +225,9 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 				
 				if(suit.equals(XO[c][r])){
 					if(c == 2){
-						main.endGame();
-						return true;
+						gameOver = true;
+						crossOut = "h" + r;
+						return;
 					}
 				}else{
 					break;
@@ -205,10 +235,10 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 				
 			}
 		}
-		return false;
+		return;
 	}
 	
-	private boolean checkDiagonal(){
+	private void checkDiagonal(){
 		String suit = "Empty";
 		
 		for(int i = 0; i < 3; i++){
@@ -218,8 +248,9 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 			
 			if(suit.equals(XO[i][i])){
 				if(i == 2){
-					main.endGame();
-					return true;
+					gameOver = true;
+					crossOut = "dr";
+					return;
 				}
 			}else{
 				break;
@@ -228,22 +259,23 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 		
 		suit = "Empty";
 		
-		for(int i = 2; i >= 0; i--){
-			if(i == 2 && XO[i][i] != null){
-				suit = XO[i][i];
+		for(int i = 0; i < 3; i++){
+			if(i == 0 && XO[2-i][i] != null){
+				suit = XO[2-i][i];
 			}
 			
-			if(suit.equals(XO[i][i])){
-				if(i == 0){
-					main.endGame();
-					return true;
+			if(suit.equals(XO[2-i][i])){
+				if(i == 2){
+					gameOver = true;
+					crossOut = "dl";
+					return;
 				}
 			}else{
 				break;
 			}
 		}
 		
-		return false;
+		return;
 	}
 	
 	public void mouseMoved(MouseEvent e) {
