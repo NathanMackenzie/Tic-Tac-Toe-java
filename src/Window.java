@@ -1,6 +1,9 @@
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -35,37 +38,49 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 
 	@Override public void paintComponent(Graphics g){
 		super.paintComponent(g);
-		paintGameBoard(g);
+		
+		Graphics2D graphics2D = (Graphics2D) g;
+
+		graphics2D.setRenderingHint(
+		        RenderingHints.KEY_ANTIALIASING,
+		        RenderingHints.VALUE_ANTIALIAS_ON);
+		
+		paintGameBoard(graphics2D);
 		
 		if(gameOver){
-			paintTiles(g);
-			crossOut(g);
+			paintTiles(graphics2D);
+			crossOut(graphics2D);
+			new GameOverDialog(main, main, "hi", "message");
 		}else{
-			paintSelected(g);
-			paintTiles(g);
+			paintSelected(graphics2D);
+			paintTiles(graphics2D);
 		}
 		
 		
 	}
 	
-	private void crossOut(Graphics g){
+	private void crossOut(Graphics2D g){
 		g.setColor(Color.RED);
 		
 		if(crossOut.startsWith("v")){
-			System.out.println(Integer.valueOf(crossOut.charAt(1)));
-			System.out.println(crossOut);
-			g.fillRect(Integer.valueOf(crossOut.charAt(1)), 10, 20, 100);
+			g.fillRect((Integer.parseInt(crossOut.charAt(1) + "")* 80) + 28, 10, 14, 225);
 			
 		}else if(crossOut.startsWith("h")){
+			g.fillRect(10, (Integer.parseInt(crossOut.charAt(1) + "")* 80) + 28, 225, 14);
 			
 		}else if(crossOut.equals("dr")){
+
+			g.setStroke(new BasicStroke(14));
+			g.drawLine(20, 20, 215, 215);
 			
 		}else if(crossOut.equals("dl")){
-			
+
+			g.setStroke(new BasicStroke(14));
+			g.drawLine(20, 215, 215, 20);
 		}
 	}
 	
-	private void paintGameBoard(Graphics g){
+	private void paintGameBoard(Graphics2D g){
 		g.fillRect(75, 0, 5, 235);
 		g.fillRect(155, 0, 5, 235);
 		g.fillRect(0, 75, 235, 5);
@@ -73,7 +88,7 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 	}
 	
 	
-	private void paintSelected(Graphics g){
+	private void paintSelected(Graphics2D g){
 		
 		if(pressed){
 			g.setColor(new Color(237, 237, 237));
@@ -102,7 +117,7 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 		}
 	}
 	
-	private void paintTiles(Graphics g){
+	private void paintTiles(Graphics2D g){
 		g.setColor(Color.BLACK);
 		int style = Font.BOLD;
 		g.setFont(new Font ("Ariel", style , 75));
@@ -289,12 +304,14 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 	}
 	
 	public void mousePressed(MouseEvent e) {
-		pressed = true;
-		if(addTile()){
-			repaint();
-			changePlayer();
+		if(gameOver == false){
+			pressed = true;
+			if(addTile()){
+				repaint();
+				changePlayer();
+			}
+			threeInARow();
 		}
-		threeInARow();
 	}
 
 	public void mouseReleased(MouseEvent e) {
