@@ -10,12 +10,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GameOverDialog extends JDialog implements ActionListener {
-	Main mainParent;
+	Main parent;
 	
-  public GameOverDialog(JFrame parent, Main main, String title, String message) {
-    super(parent, title, true);
-    mainParent = main;
-    
+	JButton newGame = new JButton("New Game"); 
+    JButton quit = new JButton("Quit"); 
+	
+  public GameOverDialog(Main parent) {
+    this.parent = parent;
+	  
     if (parent != null) {
       Dimension parentSize = parent.getSize(); 
       Point p = parent.getLocation(); 
@@ -23,21 +25,29 @@ public class GameOverDialog extends JDialog implements ActionListener {
     }
     
     JPanel messagePane = new JPanel();
-    messagePane.add(new JLabel(message));
+    messagePane.add(new JLabel("Game Over"));
     getContentPane().add(messagePane);
     JPanel buttonPane = new JPanel();
-    JButton button = new JButton("OK"); 
-    buttonPane.add(button); 
-    button.addActionListener(this);
+    buttonPane.add(quit); 
+    buttonPane.add(newGame);
+    quit.addActionListener(this);
+    newGame.addActionListener(this);
     getContentPane().add(buttonPane, BorderLayout.SOUTH);
     setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     pack(); 
+    setResizable(false);
     setVisible(true);
   }
   
   public void actionPerformed(ActionEvent e) {
-    setVisible(false); 
-    mainParent.endGame();
-    dispose(); 
+	setVisible(false); 
+	dispose(); 
+	
+	if(e.getSource() == newGame){
+		parent.endGame();
+	}else if(e.getSource() == quit){
+		parent.quit();
+	}
   }
+  
 }

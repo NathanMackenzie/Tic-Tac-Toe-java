@@ -1,4 +1,7 @@
 import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -8,13 +11,14 @@ public class Main extends JFrame{
 	static JLabel playerLabel = new JLabel("Just a test");
 	
 	public Main(){
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+		
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		add(playerLabel);
 		newGame();
-		pack();
-		setSize(235, 500);
 		setVisible(true);
 	}
 	
@@ -24,14 +28,20 @@ public class Main extends JFrame{
 	
 	public void newGame(){
 		Window window = new Window(this, true);
-		//window.setLocation(100, 100);
 		add(window);
+		pack();
+		setSize(235, 300);
 	}
 	
 	public void endGame(){
 		Component[] comp = getContentPane().getComponents();
 		remove(comp[1]);
+		newGame();
 		repaint();
+	}
+	
+	public void quit(){
+		dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 	}
 	
 }

@@ -18,13 +18,14 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 	private static int player = 1;
 	private boolean gameOver = false;
 	private String crossOut;
-	public static String[][] XO = new String[3][3];
+	public static String[][] XO;// = new String[3][3];
 	public boolean computer;
 	
 	Main main;
 	
 	public Window(Main main, boolean vsComput){
 		this.main = main;
+		XO = new String[3][3];
 		setSize(235, 235);
 		addMouseMotionListener(this);
 		addMouseListener(this);
@@ -50,7 +51,7 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 		if(gameOver){
 			paintTiles(graphics2D);
 			crossOut(graphics2D);
-			new GameOverDialog(main, main, "hi", "message");
+			new GameOverDialog(main);
 		}else{
 			paintSelected(graphics2D);
 			paintTiles(graphics2D);
@@ -296,7 +297,9 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 	public void mouseMoved(MouseEvent e) {
 	      x = e.getX();
 	      y = e.getY();
-	      repaint();
+	      if(gameOver == false){
+	    	  repaint();
+	      }
 	}
 
 	public void mouseDragged(MouseEvent e) {
@@ -316,7 +319,9 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 
 	public void mouseReleased(MouseEvent e) {
 		pressed = false;
-		repaint();
+		if(gameOver == false){
+			repaint();
+		}
 	}
 
 	public void mouseEntered(MouseEvent e) {
@@ -326,7 +331,9 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 	public void mouseExited(MouseEvent e) {
 		x = 76;
 		y = 76;
-		repaint();
+		if(gameOver == false){
+			repaint();
+		}
 	}
 
 	public void mouseClicked(MouseEvent e) {
