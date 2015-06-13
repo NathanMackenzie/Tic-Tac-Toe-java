@@ -1,5 +1,6 @@
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 
@@ -14,6 +15,8 @@ public class Main extends JFrame{
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 		
+		playerLabel.setFont(new Font("Ariel", Font.PLAIN, 30));
+		playerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
@@ -23,7 +26,7 @@ public class Main extends JFrame{
 	}
 	
 	public static void main(String [] args){
-		new Main();
+		new StartGameDialog();
 	}
 	
 	public void newGame(){
