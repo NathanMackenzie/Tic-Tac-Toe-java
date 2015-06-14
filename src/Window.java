@@ -23,7 +23,7 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 	
 	Main main;
 	
-	public Window(Main main, boolean vsComput){
+	public Window(Main main, boolean vsComput, String firstPlayer){
 		this.main = main;
 		XO = new String[3][3];
 		setSize(235, 235);
@@ -191,8 +191,10 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 		}else{
 			if(player == 0){
 				player = 1;
+				Main.playerLabel.setText("Player O");
 			}else{
 				player = 0;
+				Main.playerLabel.setText("Player X");
 			}
 		}
 		

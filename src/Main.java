@@ -9,19 +9,25 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class Main extends JFrame{
-	static JLabel playerLabel = new JLabel("Just a test");
+	static JLabel playerLabel = new JLabel();
+	private boolean computer;
+	static String firstPlayer = "X";
 	
-	public Main(){
+	public Main(boolean computer){
+		/*
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+		*/
+		this.computer = computer;
 		
+		playerLabel.setText("Player " + firstPlayer);
 		playerLabel.setFont(new Font("Ariel", Font.PLAIN, 30));
 		playerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setResizable(false);
 		add(playerLabel);
-		newGame();
+		newGame(computer);
 		setVisible(true);
 	}
 	
@@ -29,8 +35,8 @@ public class Main extends JFrame{
 		new StartGameDialog();
 	}
 	
-	public void newGame(){
-		Window window = new Window(this, true);
+	public void newGame(boolean computer){
+		Window window = new Window(this, computer, firstPlayer);
 		add(window);
 		pack();
 		setSize(235, 300);
@@ -39,7 +45,7 @@ public class Main extends JFrame{
 	public void endGame(){
 		Component[] comp = getContentPane().getComponents();
 		remove(comp[1]);
-		newGame();
+		newGame(computer);
 		repaint();
 	}
 	

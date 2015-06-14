@@ -17,12 +17,14 @@ public class GameOverDialog extends JDialog implements ActionListener {
 	
   public GameOverDialog(Main parent) {
     this.parent = parent;
-	  
+	/*  
     if (parent != null) {
+    	
       Dimension parentSize = parent.getSize(); 
       Point p = parent.getLocation(); 
       setLocation(p.x + parentSize.width / 4, p.y + parentSize.height / 4);
     }
+    */
     
     JPanel messagePane = new JPanel();
     messagePane.add(new JLabel("Game Over"));

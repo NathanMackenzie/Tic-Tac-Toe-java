@@ -45,6 +45,10 @@ public class StartGameDialog extends JDialog implements ActionListener, ItemList
 
 	public void actionPerformed(ActionEvent e){
 		dispose();
-		new Main();
+		if(singlePlayer.isSelected()){
+			new Main(true);
+		}else if(doublePlayer.isSelected()){
+			new Main(false);
+		}
 	}
 }
