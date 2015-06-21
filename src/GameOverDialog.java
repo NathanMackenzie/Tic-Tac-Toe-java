@@ -15,19 +15,20 @@ public class GameOverDialog extends JDialog implements ActionListener {
 	JButton newGame = new JButton("New Game"); 
     JButton quit = new JButton("Quit"); 
 	
-  public GameOverDialog(Main parent) {
+  public GameOverDialog(Main parent, String winner) {
     this.parent = parent;
-	/*  
+	  
     if (parent != null) {
     	
       Dimension parentSize = parent.getSize(); 
       Point p = parent.getLocation(); 
-      setLocation(p.x + parentSize.width / 4, p.y + parentSize.height / 4);
+      setLocation(p.x + 20, p.y + 100);
     }
-    */
+    
     
     JPanel messagePane = new JPanel();
     messagePane.add(new JLabel("Game Over"));
+    messagePane.add(new JLabel(winner + " Wins!"));
     getContentPane().add(messagePane);
     JPanel buttonPane = new JPanel();
     buttonPane.add(quit); 
@@ -46,7 +47,7 @@ public class GameOverDialog extends JDialog implements ActionListener {
 	dispose(); 
 	
 	if(e.getSource() == newGame){
-		parent.endGame();
+		parent.playAgain();
 	}else if(e.getSource() == quit){
 		parent.quit();
 	}

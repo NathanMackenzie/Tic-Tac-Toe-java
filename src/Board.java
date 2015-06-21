@@ -11,19 +11,20 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.JPanel;
 
 
-public class Window extends JPanel implements MouseListener, MouseMotionListener{
+public class Board extends JPanel implements MouseListener, MouseMotionListener{
 	private static int x;
 	private static int y;
 	private boolean pressed = false;
-	private static int player = 1;
+	private static int player;
 	private boolean gameOver = false;
 	private String crossOut;
 	public static String[][] XO;// = new String[3][3];
 	public boolean computer;
+	private String winner;
 	
 	Main main;
 	
-	public Window(Main main, boolean vsComput, String firstPlayer){
+	public Board(Main main, boolean vsComput, String firstPlayer){
 		this.main = main;
 		XO = new String[3][3];
 		setSize(235, 235);
@@ -33,6 +34,14 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 		x = 1000;
 		y = 1000;
 		
+		switch (firstPlayer){
+			case "X":
+				player = 1;
+				break;
+			case "O":
+				player = 0;
+				break;
+		}
 		
 		computer = vsComput;
 	}
@@ -51,7 +60,7 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 		if(gameOver){
 			paintTiles(graphics2D);
 			crossOut(graphics2D);
-			new GameOverDialog(main);
+			new GameOverDialog(main, winner);
 		}else{
 			paintSelected(graphics2D);
 			paintTiles(graphics2D);
@@ -136,9 +145,11 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 		
 		
 		switch (player){
-		case 0: tile = "X";
+		case 0: 
+			tile = "O";
 			break;
-		case 1: tile = "O";
+		case 1: 
+			tile = "X";
 			break;
 		default: tile = null;
 		}
@@ -191,10 +202,10 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 		}else{
 			if(player == 0){
 				player = 1;
-				Main.playerLabel.setText("Player O");
+				Main.playerLabel.setText("Player X");
 			}else{
 				player = 0;
-				Main.playerLabel.setText("Player X");
+				Main.playerLabel.setText("Player O");
 			}
 		}
 		
@@ -220,6 +231,7 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 				if(suit.equals(XO[c][r])){
 					if(r == 2){
 						gameOver = true;
+						winner = suit;
 						crossOut = "v" + c;
 						return;
 					}
@@ -244,6 +256,7 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 				if(suit.equals(XO[c][r])){
 					if(c == 2){
 						gameOver = true;
+						winner = suit;
 						crossOut = "h" + r;
 						return;
 					}
@@ -267,6 +280,7 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 			if(suit.equals(XO[i][i])){
 				if(i == 2){
 					gameOver = true;
+					winner = suit;
 					crossOut = "dr";
 					return;
 				}
@@ -285,6 +299,7 @@ public class Window extends JPanel implements MouseListener, MouseMotionListener
 			if(suit.equals(XO[2-i][i])){
 				if(i == 2){
 					gameOver = true;
+					winner = suit;
 					crossOut = "dl";
 					return;
 				}

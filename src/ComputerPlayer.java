@@ -3,6 +3,7 @@ import java.util.Random;
 
 public class ComputerPlayer {
 	static Random rand = new Random();
+	static String computerSuit;
 	
 	static void nextMove(){
 		if(isFull()){
@@ -12,8 +13,8 @@ public class ComputerPlayer {
 				int c = rand.nextInt(3);
 				int r = rand.nextInt(3);
 			
-				if(Window.XO[c][r] == null){
-					Window.XO[c][r] = "X";
+				if(Board.XO[c][r] == null){;
+					Board.XO[c][r] = computerSuit;
 					break;
 				}
 			}
@@ -23,7 +24,7 @@ public class ComputerPlayer {
 	private static boolean isFull(){
 		for(int c = 0; c < 3; c++){
 			for(int r = 0; r < 3; r++){
-				if(Window.XO[c][r] == null)
+				if(Board.XO[c][r] == null)
 					return false;
 			}
 		}
