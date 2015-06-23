@@ -1,8 +1,8 @@
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -64,7 +64,7 @@ public class Main extends JFrame{
 		Board window = new Board(this, computer, firstPlayer);
 		add(window);
 		pack();
-		setSize(235, 300);
+		setSize(235, 293);
 		
 	}
 	

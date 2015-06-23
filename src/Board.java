@@ -21,6 +21,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 	public static String[][] XO;// = new String[3][3];
 	public boolean computer;
 	private String winner;
+	ComputerPlayer cp = new ComputerPlayer(this);
 	
 	Main main;
 	
@@ -198,7 +199,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 	private void changePlayer(){
 		
 		if(computer){
-			ComputerPlayer.nextMove();
+			cp.start();
 		}else{
 			if(player == 0){
 				player = 1;
@@ -211,7 +212,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 		
 	}
 	
-	private void threeInARow(){
+	public void threeInARow(){
 		checkVertical();
 		
 		checkHorizontal();
