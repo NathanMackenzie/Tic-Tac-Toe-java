@@ -5,9 +5,11 @@ public class ComputerPlayer implements Runnable{
 	static Random rand = new Random();
 	static String computerSuit;
 	private Board board;
+	private Main main;
 	
-	public ComputerPlayer(Board parent){
+	public ComputerPlayer(Board parent, Main main){
 		board = parent;
+		this.main = main;
 	}
 	
 	public void run(){
@@ -19,7 +21,14 @@ public class ComputerPlayer implements Runnable{
 		}
 		nextMove();
 		board.repaint();
+		board.disable = false;
 		board.threeInARow();
+		switch(computerSuit){
+		case "X":
+			Main.playerLabel.setText("Player O");
+		case "O":
+			Main.playerLabel.setText("Player X");
+		}
 	}
 	
 	public void start(){
@@ -33,6 +42,7 @@ public class ComputerPlayer implements Runnable{
 		if(isFull()){
 			return;
 		}else{
+			System.out.println("here");
 			while(true){
 				int c = rand.nextInt(3);
 				int r = rand.nextInt(3);

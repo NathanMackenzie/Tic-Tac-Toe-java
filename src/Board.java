@@ -7,21 +7,31 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
 import javax.swing.JPanel;
 
-
+/**
+ * This class handles all game board GUI and input behavior.
+ * 
+ * @author natemackenzie
+ * @version 1.0
+ */
 public class Board extends JPanel implements MouseListener, MouseMotionListener{
+	// Int's which contain the current coordinates of the mouse
 	private static int x;
 	private static int y;
+	// Boolean for whether the mouse is pressed or not
 	private boolean pressed = false;
+	// Int for which players turn it is.
 	private static int player;
+	// Boolean to hold wether or no the game is over
 	private boolean gameOver = false;
+	// Boolean the used for disabling the game board.
+	public boolean disable = false;
 	private String crossOut;
-	public static String[][] XO;// = new String[3][3];
+	public static String[][] XO;
 	public boolean computer;
 	private String winner;
-	ComputerPlayer cp = new ComputerPlayer(this);
+	ComputerPlayer cp;
 	
 	Main main;
 	
@@ -35,6 +45,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 		x = 1000;
 		y = 1000;
 		
+		cp = new ComputerPlayer(this, main);
 		switch (firstPlayer){
 			case "X":
 				player = 1;
@@ -66,7 +77,6 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 			paintSelected(graphics2D);
 			paintTiles(graphics2D);
 		}
-		
 		
 	}
 	
@@ -199,7 +209,14 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 	private void changePlayer(){
 		
 		if(computer){
-			cp.start();
+			disable = true;
+			pressed = false;
+			x = 76;
+			y = 76;
+			Main.playerLabel.setText("Computer");
+			if(!gameOver){
+				cp.start();
+			}
 		}else{
 			if(player == 0){
 				player = 1;
@@ -213,11 +230,23 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 	}
 	
 	public void threeInARow(){
-		checkVertical();
-		
-		checkHorizontal();
-		
-		checkDiagonal();
+		if(isFull()){
+			new NoWinnerDialog(main);
+		}else{
+			checkVertical();
+			checkHorizontal();
+			checkDiagonal();
+		}
+	}
+	
+	private boolean isFull(){
+		for(int c = 0; c < 3; c++){
+			for(int r = 0; r < 3; r++){
+				if(XO[c][r] == null)
+					return false;
+			}
+		}
+		return true;
 	}
 	
 	private void checkVertical(){
@@ -315,7 +344,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 	public void mouseMoved(MouseEvent e) {
 	      x = e.getX();
 	      y = e.getY();
-	      if(gameOver == false){
+	      if(!gameOver && !disable){
 	    	  repaint();
 	      }
 	}
@@ -325,19 +354,19 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 	}
 	
 	public void mousePressed(MouseEvent e) {
-		if(gameOver == false){
+		if(!gameOver && !disable){
 			pressed = true;
 			if(addTile()){
 				repaint();
+				threeInARow();
 				changePlayer();
 			}
-			threeInARow();
 		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
 		pressed = false;
-		if(gameOver == false){
+		if(!gameOver){
 			repaint();
 		}
 	}
@@ -349,7 +378,7 @@ public class Board extends JPanel implements MouseListener, MouseMotionListener{
 	public void mouseExited(MouseEvent e) {
 		x = 76;
 		y = 76;
-		if(gameOver == false){
+		if(!gameOver){
 			repaint();
 		}
 	}

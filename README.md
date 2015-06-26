@@ -1,2 +1,3 @@
 # Tic-Tac-Toe-java
-Simple tic-tac-toe game in java
+
+A simple tic-tac-toe GUI game written in java using the SWING and AWT graphics libraries.
